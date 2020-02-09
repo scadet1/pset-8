@@ -1,4 +1,5 @@
 ///////////////////// CONSTANTS /////////////////////////////////////
+
 const winningConditions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -8,45 +9,61 @@ const winningConditions = [
   [2, 5, 8],
   [0, 4, 8],
   [2, 4, 6]
-]
+];
+
 ///////////////////// APP STATE (VARIABLES) /////////////////////////
+
 let board;
-let turn;
+let turn = "X";
 let win;
-let keepScoreX = 0;
-let keepScoreO = 0;
+let xScore= 0;
+let oScore = 0;
+let tieScore = 0;
 
 ///////////////////// CACHED ELEMENT REFERENCES /////////////////////
+
 const squares = Array.from(document.querySelectorAll("#board div"));
 const message = document.querySelector("h2");
 
 ///////////////////// EVENT LISTENERS ///////////////////////////////
+
 window.onload = init;
+document.getElementById("firstX").onclick = firstX;
+document.getElementById("firstO").onclick = firstO;
 document.getElementById("board").onclick = takeTurn;
 document.getElementById("reset-button").onclick = init;
-document.getElementById('ButtonX').onclick = firstX;
-document.getElementById('ButtonO').onclick = firstO;
-
+document.getElementById("firstX").onclick = init2;
+document.getElementById("firstO").onclick = init3;
 ///////////////////// FUNCTIONS /////////////////////////////////////
 function init() {
-  board = [
-    "", "", "",
-    "", "", "",
-    "", "", ""
-  ];
+  board = ["", "", "", "", "", "", "", "", ""];
+  turn = turn;
+  win = null;
+
+  render();
+}
+function init2() {
+  board = ["", "", "", "", "", "", "", "", ""];
   turn = "X";
   win = null;
 
   render();
 }
+function init3() {
+  board = ["", "", "", "", "", "", "", "", ""];
+  turn = "O";
+  win = null;
 
-function firstX() {
-  document.getElementById('turnButton').innerHTML = "Turn: X";
-  turn = "X";
+  render();
 }
 
-function firstO() {
-  document.getElementById('turnButton').innerHTML = "Turn: O";
+function firstX(){
+  document.getElementById("change").innerHTML = "Turn: X";
+  turn = "X";
+
+}
+function firstO(){
+  document.getElementById("change").innerHTML = "Turn: O";
   turn = "O";
 }
 
@@ -72,6 +89,10 @@ function takeTurn(e) {
 
       render();
     }
+    if (win === "T") {
+      tieScore++;
+      document.getElementById("thirdList").innerHTML = tieScore;
+    }
   }
 }
 
@@ -85,16 +106,16 @@ function getWinner() {
       board[condition[1]] === board[condition[2]]
     ) {
       winner = board[condition[0]];
+      if(winner === "X"){
+        xScore++;
+        document.getElementById("firstList").innerHTML = xScore;
+      }
+      if(winner === "O"){
+        oScore++;
+        document.getElementById("secondList").innerHTML = oScore;
+      }
     }
   });
-
-  if (winner === "X") {
-    keepScoreX++;
-    document.getElementById('ScoreX').innerHTML = keepScoreX;
-  } else if (winner === "O") {
-    keepScoreO++;
-    document.getElementById('ScoreO').innerHTML = keepScoreO;
-  }
 
   return winner ? winner : board.includes("") ? null : "T";
 }
