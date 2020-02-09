@@ -1,4 +1,4 @@
-///////////////////// CONSTANTS /////////////////////////////////////
+/////////////////// CONSTANTS /////////////////////////////////////
 const winningConditions = [
   [0, 1, 2],
   [3, 4, 5],
@@ -14,113 +14,119 @@ const winningConditions = [
 let board;
 let turn;
 let win;
-let xWins = 0;
-let oWins = 0;
-let ties = 0;
-let starter = "X";
 
 ///////////////////// CACHED ELEMENT REFERENCES /////////////////////
 const squares = Array.from(document.querySelectorAll("#board div"));
-const message = document.querySelector("h2");   // grab the subheader
-const victoryAudio = document.getElementById("victory-audio");
+const message = document.querySelector("h2");
 
 ///////////////////// EVENT LISTENERS ///////////////////////////////
 window.onload = init;
 document.getElementById("board").onclick = takeTurn;
 document.getElementById("reset-button").onclick = init;
-document.getElementById("change-order-button").onclick = changeOrder;
-document.getElementById("reset-score-button").onclick = resetScore;
 
 ///////////////////// FUNCTIONS /////////////////////////////////////
 function init() {
-    board = [
-        "", "", "",
-        "", "", "",
-        "", "", ""
-    ];
+  board = [
+    "", "", "",
+    "", "", "",
+    "", "", ""
+  ];
+  turn = "X";
+  win = null;
 
-    turn = "X";
-    win = null;
-
-    render();
-    victoryAudio.pause();
-    victoryAudio.currentTime = 0;
+  render();
 }
 
 function render() {
-    board.forEach(function(mark, index) {
-        squares[index].textContent = mark;
-    });
+  board.forEach(function(mark, index) {
+    squares[index].textContent = mark;
+  });
 
-    message.textContent = win === "T" ? "It's a tie!" : win ? `${win} wins!` : `Turn: ${turn}`;
+  message.textContent =
+    win === "T" ? "It's a tie!" : win ? `${win} wins!` : `Turn: ${turn}`;
 }
 
 function takeTurn(e) {
-    if (!win) {
-        let index = squares.findIndex(function(square) {
-            return square === e.target;
-    });
+  let index = squares.findIndex(function(square) {
+    return square === e.target;
+  });
+  board[index] = turn;
+  turn = turn === "X" ? "O" : "X";
 
-    if (board[index] === "") {
-        board[index] = turn;
-        turn = turn === "X" ? "O" : "X";
-        win = getWinner();
-        if (win === "X") {
-            xWins++;
-            document.getElementById("x-wins").innerHTML = xWins;
-            victoryAudio.play();
-        }
-        else if (win === "O") {
-            oWins++;
-            document.getElementById("o-wins").innerHTML = oWins;
-            victoryAudio.play();
-        }
-        else if (win === "T") {
-            ties++;
-            document.getElementById("ties").innerHTML = ties;
-        }
-
-        render();
-        }
-    }
+  render();
 }
 
 function getWinner() {
-    let winner = null;
+  let winner = null;
 
-    winningConditions.forEach(function(condition, index) {
-        if (
-            board[condition[0]] &&
-            board[condition[0]] === board[condition[1]] &&
-            board[condition[1]] === board[condition[2]]
-        ) {
-            winner = board[condition[0]];
-        }
+  winningConditions.forEach(function(condition, index) {
+    if (
+      board[condition[0]] &&
+      board[condition[0]] === board[condition[1]] &&
+      board[conition[1]] === board[condition[2]]
+    ) {
+      winner = board[condition[0]];
+    }
+  });
+
+  return winner;
+}
+
+function takeTurn(e) {
+  if (!win) {
+    let index = squares.findIndex(function(square) {
+      return square === e.target;
     });
 
-    return winner ? winner : board.includes("") ? null : "T";
+    if (board[index] === "") {
+      board[index] = turn;
+      turn = turn === "X" ? "O" : "X";
+      win = getWinner();
+
+      render();
+    }
+  }
 }
 
-function changeOrder() {
-    init();
-    if (starter === "X") {
-        turn = "O";
-        starter = "O";
+function getWinner() {
+  let winner = null;
+
+  winningConditions.forEach(function(condition, index) {
+    if (
+      board[condition[0]] &&
+      board[condition[0]] === board[condition[1]] &&
+      board[condition[1]] === board[condition[2]]
+    ) {
+      winner = board[condition[0]];
     }
-    else {
+  });
+
+  return winner ? winner : board.includes("") ? null : "T";
+}
+
+function keepScore() {
+  if (win === !"T") {
+    if (win === "X") {
+      const countx = document.getElementById("x-score");
+
+    }
+  }
+}
+
+function firstTurn() {
+    const whoIsFirst = document.getElementById("whosFirst");
+
+    var first = whoIsFirst.toLowerCase();
+
+    switch (first) {
+      case x:
         turn = "X";
-        starter = "X"
+        break;
+      case o:
+        turn = "O";
+        break;
+      default:
+        alert("Type in X or O to decide who goes first!");
+        break;
     }
-    document.getElementById("change-order-button").innerHTML = starter;
-    render();
-}
-
-function resetScore() {
-    xWins = 0;
-    oWins = 0;
-    ties = 0;
-
-    document.getElementById("x-wins").innerHTML = xWins;
-    document.getElementById("o-wins").innerHTML = oWins;
-    document.getElementById("ties").innerHTML = ties;
 }
