@@ -6,7 +6,7 @@
 body {
   text-align: center;
   font-family: "Roboto", monospace;
-  background-color: rgb(237, 237, 250)
+  background-color: mediumpurple
 }
 
 /*
@@ -21,10 +21,7 @@ h1 {
   margin: 2%;
 }
 
-/*
- * The subheader (which let's us know whose turn it is) is a little smaller
- * and less prominent.
- */
+
 
 h2 {
   font-size: 36px;
@@ -92,7 +89,7 @@ h2 {
  */
 
 #reset-button {
-  background-color: white;
+  background-color: lightgrey;
   border: 2px solid black;
   color: black;
   font-size: 21px;
