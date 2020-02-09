@@ -106,4 +106,4 @@ winningConditions.forEach(function(condition, index) {
 });
 
 return winner ? winner : board.includes("") ? null : "T";
-
+}
